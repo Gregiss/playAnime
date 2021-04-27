@@ -17,7 +17,7 @@ class HomeController {
       animes.push({
         name: name,
         idAnime: idAnime,
-        photo: photo
+        photo: photo.replace('300','1200')
       })
     })
 
