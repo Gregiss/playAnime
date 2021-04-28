@@ -11,8 +11,8 @@ class Modal extends React.Component {
         super(props);
         this.state = {
             fakeLoading: [0,0,0,0,0,0,0,0,0,0],
-            paginaAtual: this.props.anime.ultimaPagina,
-            eps: this.props.anime.idEpisode
+            paginaAtual: this.props.anime != null ? this.props.anime.ultimaPagina : 1,
+            eps: this.props.anime != null ? this.props.anime.idEpisode : []
         };
         this.voltar= this.voltar.bind(this);
         this.fetchMoreData= this.fetchMoreData.bind(this);
