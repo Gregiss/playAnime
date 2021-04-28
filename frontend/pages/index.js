@@ -19,7 +19,9 @@ class Home extends React.Component {
       searchParam: "",
       searchResult: null,
       vendoAnime: null,
-      vendoModal: false
+      vendoModal: false,
+      loadingAnimes: true,
+      fakeLoading: [0,0,0,0,0,0,0,0,0,0]
     };
     this.end= this.end.bind(this);
     this.getAnime= this.getAnime.bind(this);
@@ -35,12 +37,14 @@ class Home extends React.Component {
       const json = res.data
       react.setState({animeDestaque: json.animes[Math.floor(Math.random() * json.animes.length)]})
       react.setState({animes: json.animes})
+      react.setState({loadingAnimes: false})
     } catch (error) {
       console.log(`error`)
       return { error };
     }
   }
   async end(e){
+    this.setState({loadingAnimes: true})
     if((e.index / 8).toString().includes('.')){
       const react = this
       randomPage++
@@ -50,6 +54,7 @@ class Home extends React.Component {
         var joined = react.state.animes.concat(json.animes);
         react.setState({ animes: joined })
         this.setState({atualSlide: 0})
+        react.setState({loadingAnimes: false})
       } catch (error) {
         console.log(`error`)
         return { error };
@@ -182,6 +187,19 @@ class Home extends React.Component {
           </a> 
           </div>
           ))}
+          { this.state.loadingAnimes && this.state.fakeLoading .map(anime => (
+          <div>
+            <a>
+            <div 
+            className="anime" key={anime.name}>
+              <div className="photo fakeLoading">
+                <div className="transparent"></div> 
+              </div>
+              <h1></h1>
+            </div>
+          </a> 
+          </div>
+          ))}
         </Carousel>
         }
       </div>
@@ -200,6 +218,19 @@ class Home extends React.Component {
         user-select: none;
         overflow-y: auto;
         overflow-x: hidden;
+      }
+
+      .fakeLoading{
+        animation: 1.4s loadindFake infinite;
+      }
+
+      @keyframes loadindFake{
+        0%{
+          background: rgba(255,255,255,0.3)
+        }
+        0%{
+          background: rgba(255,255,255,0.5)
+        }
       }
 
       * {
@@ -367,6 +398,10 @@ class Home extends React.Component {
 
       .fixedTop input:focus{
         border-bottom: 2px solid #673ab7;
+      }
+
+      .rec-carousel button{
+        display: none;
       }
 
     `}</style>
