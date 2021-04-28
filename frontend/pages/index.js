@@ -5,8 +5,9 @@ import { createStore } from 'redux'
 import { useState } from 'react';
 import { useRouter } from 'next/router'
 import Carousel from 'react-elastic-carousel';
+import Modal from './modal';
 
-var randomPage = Math.floor(Math.random() * 10) + 1
+var randomPage = Math.floor(Math.random() * 50) + 1
 
 class Home extends React.Component {
   constructor(props) {
@@ -16,9 +17,12 @@ class Home extends React.Component {
       atualSlide: 0,
       animeDestaque: null,
       searchParam: "",
-      searchResult: null
+      searchResult: null,
+      vendoAnime: null,
+      vendoModal: false
     };
     this.end= this.end.bind(this);
+    this.getAnime= this.getAnime.bind(this);
   }
   componentDidMount(){
     this.setState({animes: []})
@@ -83,6 +87,22 @@ class Home extends React.Component {
     this.setState({searchParam: document.querySelector("#inputAnime").value})
     this.submitFormDigitar()
   }
+  async getAnime(animeID) {
+    this.setState({vendoAnime: null})
+    this.setState({vendoModal: true})
+    const react = this
+    try {
+      const res = await axios.get(`http://localhost:3333/anime/${animeID}`);
+      const json = res.data
+      react.setState({vendoAnime: json})
+    } catch (error) {
+      console.log(`error`)
+      return { error };
+    }
+  }
+  sairModal(){
+    this.setState({vendoModal: false})
+  }
   render() {
     return <div className="container">
     <Head>
@@ -90,6 +110,11 @@ class Home extends React.Component {
       <link rel="icon" href="/favicon.ico" />
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
     </Head>
+    { this.state.vendoModal &&
+    <Modal 
+    home={this}
+    anime={this.state.vendoAnime}></Modal>
+    }
     <div className="fixedTop">
       <form onSubmit={(e) => this.submitForm(e)}>
         <input 
@@ -113,8 +138,8 @@ class Home extends React.Component {
           onNextEnd={this.end}>
           {this.state.searchResult.map(anime => (
             <div>
-              <a 
-            href={`/anime/${anime.idAnime}`}>
+              <a
+              onClick={() => this.getAnime(anime.idAnime)}>
               <div 
               className="anime" key={anime.name}>
                 <div className="photo">
@@ -140,8 +165,8 @@ class Home extends React.Component {
         onNextEnd={this.end}>
         {this.state.animes.map(anime => (
           <div>
-            <a 
-          href={`/anime/${anime.idAnime}`}>
+            <a
+            onClick={() => this.getAnime(anime.idAnime)}>
             <div 
             className="anime" key={anime.name}>
               <div className="photo">
@@ -272,6 +297,7 @@ class Home extends React.Component {
         width: 210px;
         height: 250px;
         display: inline-block;
+        cursor: pointer;
       }
 
       .anime .photo{
