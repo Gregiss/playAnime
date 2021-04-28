@@ -9,6 +9,7 @@ class Modal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            fakeLoading: [0,0,0,0,0,0,0,0,0,0]
         };
         this.voltar= this.voltar.bind(this);
     }
@@ -23,6 +24,33 @@ class Modal extends React.Component {
         return <div className="Modal">
         
         <div className="openAnime">
+        { this.props.anime == undefined &&
+            <div className="load">
+                <div className="imgCover fakeLoading">
+                <a onClick={() => this.voltar()} className="voltar">
+                    <i className="fas fa-arrow-left"></i>
+                </a>
+                </div>
+                <div className="ep">
+                <h1>Episódios</h1>
+                {this.state.fakeLoading.map((ep, index) => (
+                <a href={`/assistir/${ep.episodeId}`}>
+                    <div
+                    className="epe">
+                        <div className="left">
+                            <h1>{index}</h1>
+                            <div className="photo fakeLoading">
+                            </div>
+                        </div>
+                        <div className="right">
+                            <h1 className="fakeLoading"></h1>
+                        </div>
+                    </div>
+                </a>
+                ))}
+                </div>
+            </div> 
+            }
             { this.props.anime != undefined &&
             <div className="load">
                 <div className="imgCover">
@@ -72,6 +100,19 @@ class Modal extends React.Component {
         box-sizing: border-box;
       }
 
+      .fakeLoading{
+        animation: 1.4s loadindFake infinite;
+      }
+
+      @keyframes loadindFake{
+        0%{
+          background: rgba(255,255,255,0.3)
+        }
+        0%{
+          background: rgba(255,255,255,0.5)
+        }
+      }
+
       .ep a{
           color: white;
           text-decoration: none;
@@ -112,7 +153,7 @@ class Modal extends React.Component {
       
       .imgCover{
         width: 100%;
-        height: 400px;
+        height: 300px;
         position: relative;
         left: 0px;
         top: 0px;
@@ -141,7 +182,7 @@ class Modal extends React.Component {
       }
 
       .ep{
-          margin-top: -100px;
+          margin-top: 0px;
           margin-left: 20px;
           color: #fff;
           font-size: 12px;
@@ -171,6 +212,9 @@ class Modal extends React.Component {
       .epe .left .photo{
           margin-left: 30px;
           transform: scale(0.8);
+          width: 154px;
+          height: 89px;
+          border-radius: 4px;
       }
 
       .epe .right h1{
