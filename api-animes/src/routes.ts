@@ -23,4 +23,6 @@ routes.get('/search/:search/page/:page', animesFindedController.index);
 routes.get('/anime/:idAnime', episodesController.index);
 routes.get('/video/:idEpisode', episodesController.show);
 
+routes.get('/loadVideo/:url', episodesController.player);
+
 export default routes;

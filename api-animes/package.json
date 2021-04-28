@@ -33,6 +33,8 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "jquery": "^3.6.0",
-    "querystring": "^0.2.1"
+    "node-fetch": "^2.6.1",
+    "querystring": "^0.2.1",
+    "readable-web-to-node-stream": "^3.0.1"
   }
 }

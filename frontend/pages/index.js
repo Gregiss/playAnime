@@ -85,10 +85,10 @@ class Home extends React.Component {
   }
   render() {
     return <div className="container">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
     <Head>
       <title>NekoWatch</title>
       <link rel="icon" href="/favicon.ico" />
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
     </Head>
     <div className="fixedTop">
       <form onSubmit={(e) => this.submitForm(e)}>
@@ -277,6 +277,7 @@ class Home extends React.Component {
         position: absolute;
         width: 100%;
         height: 100%;
+        left: 0px;
       }
 
       .rec-carousel-item:hover{

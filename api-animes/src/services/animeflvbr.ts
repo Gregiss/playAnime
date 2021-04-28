@@ -15,3 +15,7 @@ export const getAnimeVideo = (idEp: any) => {
 
   return axios.post('https://www.branitube.net/api/v1/load-player', querystring.stringify({ ep_id: idEp }))
 }
+
+export const getNameVideo = (idEp: any) => {
+  return axios.get(`https://www.branitube.net/video/${idEp}`)
+}

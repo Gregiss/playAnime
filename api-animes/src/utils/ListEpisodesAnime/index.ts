@@ -63,6 +63,8 @@ async function listEpisodeAnime(idAnime: string) {
     }
   });
 
+  dados.idEpisode = dados.idEpisode.slice(0).reverse();
+
   return dados
 
   // return {
