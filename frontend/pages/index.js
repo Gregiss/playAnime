@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router'
 import Carousel from 'react-elastic-carousel';
 import Modal from './modal';
+import Destaque from './Dashboard'
 
 var randomPage = Math.floor(Math.random() * 10) + 1
 
@@ -135,6 +136,7 @@ class Home extends React.Component {
         <button></button>
       </form>
     </div>
+    <Destaque></Destaque>
     <div className="scrollAnime">
     { this.state.searchResult != null && this.state.searchParam.trim().length > 0 &&
       <div>
@@ -217,6 +219,7 @@ class Home extends React.Component {
         user-select: none;
         overflow-y: auto;
         overflow-x: hidden;
+        padding-bottom: 5vh;
       }
 
       .fakeLoading{
@@ -325,6 +328,8 @@ class Home extends React.Component {
 
       .scrollAnime{
         margin-left: -40px;
+        top: -12vh;
+        position: relative;
       }
       
       .anime{
@@ -379,6 +384,7 @@ class Home extends React.Component {
         position: fixed;
         right: 60px;
         z-index: 100;
+        top: 40px;
       }
 
       .fixedTop button{
@@ -390,7 +396,7 @@ class Home extends React.Component {
         color: #fff;
         padding: 8px;
         border-radius: 4px;
-        background: #000;
+        background: rgba(0,0,0,.80);
         font-size: 20px;
         outline: none;
       }
@@ -401,6 +407,14 @@ class Home extends React.Component {
 
       .rec-carousel button{
         display: none;
+      }
+
+      .rec-dot{
+        box-shadow: 0 0 1px 2px rgb(255 255 255 / 50%) !important; 
+      }
+      
+      .rec-dot_active{
+        box-shadow: 0 0 1px 3px rgb(103 58 183) !important;
       }
 
     `}</style>
