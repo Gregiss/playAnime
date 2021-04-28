@@ -8,10 +8,12 @@ async function listEpisodeAnime(idAnime: string) {
   const photo = `${url}${$('.imgPoster img').attr('src')}`
   const animeNome = $(".largeSize").text()
   const sinopse = $(".sinopseText").text()
+  var imageCover = $('.areaCoverAnime').find('.imgCover').find('img').attr('src')
   var dados = {
     photo: photo,
     animeNome: animeNome,
     sinopse: sinopse,
+    imageCover: imageCover,
     idEpisode: new Array()
   }
 
@@ -43,16 +45,20 @@ async function listEpisodeAnime(idAnime: string) {
   // };
   $('.item-ep').find('.area-ep').each(function(i: number, element) {
     var idEpisode = $(element).find('a').attr('href')
+    var ep = $(element).find('.infos-bottom').find('.ep-info').find('.anime-content').text().split('EP.')[1].split(' ')[1]
     var title = $(element).find('a').attr('title')
+    var imageCover
     var image = ""
     if(idEpisode?.includes("/video")){
       idEpisode = idEpisode.split('/')[2]
       title = title?.split("-")[0]
       image = `https://branitube.net${$(element).find('img').attr('src')}`
+      image = image.replace('300', '720')
       dados.idEpisode.push({
         episodeId: idEpisode,
         title: title,
-        image: image
+        image: image,
+        episode: ep
       })
     }
   });

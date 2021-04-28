@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import axios from 'axios';
 import { useState } from 'react';
+import { useRouter } from 'next/router'
 
 const Links = [
   {
@@ -24,8 +25,8 @@ const Home = ({animes, error}) => {
       </Head>
 
       <div 
-      onMouseEnter={() => setState({hoverLeft: true})}
-      onMouseLeave={() => setState({hoverLeft: false})}
+      // onMouseEnter={() => setState({hoverLeft: true})}
+      // onMouseLeave={() => setState({hoverLeft: false})}
       className={`fixedLeft ${(state.hoverLeft ? `FixadoLeft` : 'dontFixado')}`}>
         <div className="logo">
           <img src={`./logo.png`}></img>
@@ -41,12 +42,14 @@ const Home = ({animes, error}) => {
       <div className="scrollAnime">
         <h1 className="title">Animes</h1>
         {animes.animes.map(anime => (
-          <a href={`/anime/${anime.idAnime}`}>
+          <a 
+          href={`/anime/${anime.idAnime}`}>
             <div 
             className="anime" key={anime.name}>
               <div className="photo">
                 <img src={anime.photo}/>  
               </div>
+              <h1>{ anime.name }</h1>
             </div>
           </a> ))}
       </div>
@@ -183,7 +186,6 @@ const Home = ({animes, error}) => {
           width: 22vw;
           height: 22vh;
           display: inline-block;
-          overflow: hidden;
           transform: scale(0.8);
           position: relative;
           left: 230px;
@@ -194,7 +196,6 @@ const Home = ({animes, error}) => {
 
         .anime .photo{
           position: absolute;
-          overflow: hidden;
           width: 100%;
           height: 100%;
         }
@@ -205,6 +206,17 @@ const Home = ({animes, error}) => {
           object-fit: cover;
         }
 
+        .anime h1{
+          position: absolute;
+          margin-top: 8em;
+          color: #fff;
+          left: 0px;
+          font-size: 1.2vw;
+          text-shadow: 1px 2px rgba(0,0,0,.90);
+          max-width: 80%;
+          overflow: hidden;
+        }
+
       `}</style>
     </div>
   )
@@ -212,7 +224,7 @@ const Home = ({animes, error}) => {
 
 Home.getInitialProps = async ctx => {
   try {
-    var random = Math.floor(Math.random() * 61);
+    var random = Math.floor(Math.random() * 10);
     const res = await axios.get(`http://localhost:3333/page/${random}`);
     const animes = res.data;
     return { animes };
