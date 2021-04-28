@@ -346,15 +346,16 @@ class Home extends React.Component {
         left: 0px;
       }
 
-      .rec-carousel-item:hover{
-        border: 2px solid #fff;
-      }
-
       .anime img{
         width: calc(100% - 4px);
         height: 100%;
         object-fit: cover;
-        margin-left: -1px;
+        margin-left: 3px;
+        box-shadow: -3px 4px 7px 2px #00000096;
+      }
+
+      .anime img:hover{
+        border: 2px solid #fff;
       }
 
       .anime h1{
@@ -412,7 +413,7 @@ class Home extends React.Component {
       .rec-dot{
         box-shadow: 0 0 1px 2px rgb(255 255 255 / 50%) !important; 
       }
-      
+
       .rec-dot_active{
         box-shadow: 0 0 1px 3px rgb(103 58 183) !important;
       }
