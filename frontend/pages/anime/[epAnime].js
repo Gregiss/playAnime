@@ -142,8 +142,7 @@ class Anime extends React.Component {
           {
           this.state.searchResult != null &&
           <Carousel 
-          itemsToShow={8}
-          onNextEnd={this.end}>
+          itemsToShow={8}>
           {this.state.searchResult.map(anime => (
             <div>
               <a
