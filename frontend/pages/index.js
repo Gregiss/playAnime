@@ -292,7 +292,7 @@ class Home extends React.Component {
 
       .anime h1{
         position: absolute;
-        margin-top: 10em;
+        bottom: 0;
         color: #fff;
         left: 10px;
         font-size: 1.2vw;
