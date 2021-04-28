@@ -35,9 +35,7 @@ class Home extends React.Component {
     }
   }
   async end(e){
-    this.setState({atualSlide: this.state.atualSlide += 1})
-    console.log(this.state.atualSlide)
-    if(this.state.atualSlide == 3){
+    if((e.index / 8).toString().includes('.')){
       const react = this
       randomPage++
       try {
