@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 import Carousel from 'react-elastic-carousel';
 import Modal from '../modal';
 
-var randomPage = Math.floor(Math.random() * 50) + 1
+var randomPage = Math.floor(Math.random() * 10) + 1
 
 class Anime extends React.Component {
   constructor(props) {
@@ -19,7 +19,9 @@ class Anime extends React.Component {
       searchParam: "",
       searchResult: null,
       vendoAnime: null,
-      vendoModal: false
+      vendoModal: false,
+      loadingAnimes: true,
+      fakeLoading: [0,0,0,0,0,0,0,0,0,0]
     };
     this.end= this.end.bind(this);
     this.getAnime= this.getAnime.bind(this);
@@ -37,12 +39,14 @@ class Anime extends React.Component {
       const json = res.data
       react.setState({animeDestaque: json.animes[Math.floor(Math.random() * json.animes.length)]})
       react.setState({animes: json.animes})
+      react.setState({loadingAnimes: false})
     } catch (error) {
       console.log(`error`)
       return { error };
     }
   }
   async end(e){
+    this.setState({loadingAnimes: true})
     if((e.index / 8).toString().includes('.')){
       const react = this
       randomPage++
@@ -52,8 +56,10 @@ class Anime extends React.Component {
         var joined = react.state.animes.concat(json.animes);
         react.setState({ animes: joined })
         this.setState({atualSlide: 0})
+        react.setState({loadingAnimes: false})
       } catch (error) {
         console.log(`error`)
+        react.setState({loadingAnimes: false})
         return { error };
       }
     }
@@ -180,6 +186,19 @@ class Anime extends React.Component {
           </a> 
           </div>
           ))}
+          { this.state.loadingAnimes && this.state.fakeLoading .map(anime => (
+          <div>
+            <a>
+            <div 
+            className="anime" key={anime.name}>
+              <div className="photo fakeLoading">
+                <div className="transparent"></div> 
+              </div>
+              <h1></h1>
+            </div>
+          </a> 
+          </div>
+          ))}
         </Carousel>
         }
       </div>
@@ -210,6 +229,19 @@ class Anime extends React.Component {
         height: 100px;
         right: 0px;
         float: right;
+      }
+
+      .fakeLoading{
+        animation: 1.4s loadindFake infinite;
+      }
+
+      @keyframes loadindFake{
+        0%{
+          background: rgba(255,255,255,0.3)
+        }
+        0%{
+          background: rgba(255,255,255,0.5)
+        }
       }
 
       .fixedLeft p{

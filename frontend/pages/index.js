@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 import Carousel from 'react-elastic-carousel';
 import Modal from './modal';
 
-var randomPage = Math.floor(Math.random() * 50) + 1
+var randomPage = Math.floor(Math.random() * 10) + 1
 
 class Home extends React.Component {
   constructor(props) {
