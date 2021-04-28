@@ -44,9 +44,9 @@ class Home extends React.Component {
     }
   }
   async end(e){
-    this.setState({loadingAnimes: true})
     if((e.index / 8).toString().includes('.')){
       const react = this
+      this.setState({loadingAnimes: true})
       randomPage++
       try {
         const res = await axios.get(`http://localhost:3333/page/${randomPage}`);

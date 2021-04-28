@@ -46,8 +46,8 @@ class Anime extends React.Component {
     }
   }
   async end(e){
-    this.setState({loadingAnimes: true})
     if((e.index / 8).toString().includes('.')){
+      this.setState({loadingAnimes: true})
       const react = this
       randomPage++
       try {
