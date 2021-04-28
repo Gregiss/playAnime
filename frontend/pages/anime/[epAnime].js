@@ -41,7 +41,7 @@ function Anime({anime, error}) {
               <div className="photo">
                 <img src={ep.image}/>  
               </div>
-              <h1>Ep. { ep.episode }</h1>
+              <h1>{ ep.episode }</h1>
             </div>
           </a> ))}
       </div>

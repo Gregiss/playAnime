@@ -2,6 +2,7 @@ import Head from 'next/head'
 import axios from 'axios';
 import { useState } from 'react';
 import { useRouter } from 'next/router'
+import Carousel from 'react-elastic-carousel';
 
 const Links = [
   {
@@ -15,6 +16,13 @@ const Home = ({animes, error}) => {
   const [state, setState] = useState([]);
   state: {
     hoverLeft: false
+    Next: 0
+  }
+  function scrollLeft(){
+    Next++
+  }
+  function scrollRight(){
+    Next--
   }
   return (
     <div className="container">
@@ -41,17 +49,20 @@ const Home = ({animes, error}) => {
       </div>
       <div className="scrollAnime">
         <h1 className="title">Animes</h1>
+        <div>
         {animes.animes.map(anime => (
           <a 
           href={`/anime/${anime.idAnime}`}>
             <div 
             className="anime" key={anime.name}>
               <div className="photo">
+                <div className="transparent"></div>
                 <img src={anime.photo}/>  
               </div>
               <h1>{ anime.name }</h1>
             </div>
           </a> ))}
+        </div>
       </div>
       
 
@@ -64,18 +75,13 @@ const Home = ({animes, error}) => {
             Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
             sans-serif;
           background-color: #181818;
-          overflow: hidden;
+          user-select: none;
+          overflow-y: auto;
+          overflow-x: hidden;
         }
 
         * {
           box-sizing: border-box;
-        }
-
-        .scrollAnime{
-          overflow: hidden;
-          height: 200px;
-          white-space: nowrap;
-          z-index: 1;
         }
 
         .fixedLeft .logo{
@@ -166,14 +172,7 @@ const Home = ({animes, error}) => {
         }
 
         .scrollAnime{
-          width: 8540px;
-          height: auto;
-          overflow: hidden;
-          opacity: 1;
-          transform: translate3d(0px, 0px, 0px);
-          margin: 10px;
-          position: relative;
-          left: -40px;
+          margin-left: -40px;
         }
 
         .scrollAnime h1{
@@ -217,6 +216,30 @@ const Home = ({animes, error}) => {
           overflow: hidden;
         }
 
+        .arrowLef{
+          position: absolute;
+          width: 100%;
+          top: 118px;
+          height: 17.6vh;
+        }
+
+        .arrowLef .arrowLeft{
+          height: 100%;
+          background: #fff;
+          width: 4vw;
+          left: 90px;
+          position: absolute;
+          z-index: 1000;
+        }
+
+        .arrowRight{
+          height: 100%;
+          background: #fff;
+          width: 4vw;
+          right: 0px;
+          position: absolute;
+          z-index: 1000;
+        }
       `}</style>
     </div>
   )
