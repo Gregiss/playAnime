@@ -26,17 +26,20 @@ class Modal extends React.Component {
                 <div className="ep">
                 <h1>Episódios</h1>
                 {this.props.anime.idEpisode.map((ep, index) => (
-                <div className="epe">
-                    <div className="left">
-                        <h1>{ index + 1}</h1>
-                        <div className="photo">
-                        <img src={ep.image}/>
+                <a href={`/assistor/${ep.episodeId}`}>
+                    <div
+                    className="epe">
+                        <div className="left">
+                            <h1>{ index + 1}</h1>
+                            <div className="photo">
+                            <img src={ep.image}/>
+                            </div>
+                        </div>
+                        <div className="right">
+                            <h1>{ep.episode}</h1>
                         </div>
                     </div>
-                    <div className="right">
-                        <h1>{ep.episode}</h1>
-                    </div>
-                </div>
+                </a>
                 ))}
                 </div>
             </div> 
@@ -59,6 +62,11 @@ class Modal extends React.Component {
 
       * {
         box-sizing: border-box;
+      }
+
+      .ep a{
+          color: white;
+          text-decoration: none;
       }
 
       .Modal{
