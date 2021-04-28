@@ -123,9 +123,12 @@ class Home extends React.Component {
       <link rel="icon" href="/favicon.ico" />
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
     </Head>
+    { this.state.vendoModal && this.state.vendoAnime == null &&<div className="openAnimeBa">
+    <i className="fas fa-spinner"></i>
+    </div> }
     { this.state.vendoModal && this.state.vendoAnime != null &&
     <div>
-    <div className="openAnimeBa"></div>
+    
     <Modal 
       home={this}
       anime={this.state.vendoAnime}></Modal>
@@ -422,6 +425,35 @@ class Home extends React.Component {
 
       .rec-dot_active{
         box-shadow: 0 0 1px 3px rgb(103 58 183) !important;
+      }
+
+      .openAnimeBa{
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,.50);
+        z-index: 200;
+        top: 0px;
+        left: 0px;
+      }
+
+      .openAnimeBa i{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 500%;
+        animation: 1s loding infinite;
+        color: white;
+      }
+
+      @keyframes loding{
+        0%{
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        100%{
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
       }
 
 

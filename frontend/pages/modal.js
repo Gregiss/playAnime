@@ -12,7 +12,8 @@ class Modal extends React.Component {
         this.state = {
             fakeLoading: [0,0,0,0,0,0,0,0,0,0],
             paginaAtual: this.props.anime != null ? this.props.anime.ultimaPagina : 1,
-            eps: this.props.anime != null ? this.props.anime.idEpisode : []
+            eps: this.props.anime != null ? this.props.anime.idEpisode : [],
+            loading: false
         };
         this.voltar= this.voltar.bind(this);
         this.fetchMoreData= this.fetchMoreData.bind(this);
@@ -27,17 +28,21 @@ class Modal extends React.Component {
     async fetchMoreData(){
       if(this.state.paginaAtual > 0){
           const react = this
+          react.setState({loading: true})
           react.setState({paginaAtual: react.state.paginaAtual -= 1})
-        
           const res = await axios.get(`http://localhost:3333/anime/${react.props.anime.idAnime}/${react.props.anime.link}/${react.state.paginaAtual}`);
           const json = res.data.idEpisode
           var joined = react.state.eps.concat(json);
           react.setState({ eps: joined })
+          react.setState({loading: false})
       }
 
     };
     render() {
         return <div className="Modal">
+          { this.state.loading && <div className="openAnimeBa">
+          <i className="fas fa-spinner"></i>
+          </div> }
         <div 
         onScroll={(e) => console.log(e)}
         className="openAnime">
@@ -262,6 +267,35 @@ class Modal extends React.Component {
           height: 89px;
           border-radius: 4px;
           object-fit: cover;
+      }
+
+      .openAnimeBa{
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,.50);
+        z-index: 200;
+        top: 0px;
+        left: 0px;
+      }
+
+      .openAnimeBa i{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 500%;
+        animation: 1s loding infinite;
+        color: white;
+      }
+
+      @keyframes loding{
+        0%{
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        100%{
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
       }
       `}</style>
             </div>
