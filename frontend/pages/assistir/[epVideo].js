@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import axios from 'axios';
 import React from 'react'
-import { useRouter } from 'next/router'
+import ReactNetflixPlayer from './player'
 
 class Video extends React.Component {
   constructor(props) {
@@ -35,20 +35,54 @@ class Video extends React.Component {
     </Head>
       <div>
         <div>
-          { !this.state.loadingPlayer && 
+          {/* { !this.state.loadingPlayer && 
           <div className="preview">
             <i className="fas fa-spinner"></i>
-          </div> }
+          </div> } */}
           { this.state.anime != null && 
           <div className="player">
-            <video
-            preload={'auto'}
-            autoPlay={'true'}
-            controls={'true'}
-            onLoadStart={() => this.setState({ loadingPlayer: true })}
-            src={this.state.anime.file_sd}>
+              <ReactNetflixPlayer
+              // Vídeo Link - Just data is required
+              src={`${(this.state.anime != null ? this.state.anime.file_sd : '')}`}
+              // src={"http://videoinvalid"}
+              title={`${(this.state.anime != null ? this.state.anime.nomeAnime : 'carregando...')}`}
+              subTitle="Anime"
+              titleMedia={`${(this.state.anime != null ? this.state.anime.nomeAnime : 'carregando...')}`}
+              extraInfoMedia="Anime"
+              // Text language of player
+              playerLanguage="pt"
+              // Action when the button X (close) is clicked
+              backButton={() => {document.location.pathname = "/"}}
+              // The player use the all viewport
+              fullPlayer
+              autoPlay
+              startPosition={0}
+              // The info of the next video action
+              dataNext={{ title: 'Não existe um próximo vídeo.' }}
+              // The action call when the next video is clicked
+              onNextClick={() => {}}
+              // The function call when a item in reproductionList is clicked
+              onClickItemListReproduction={(id, playing) => {
+                return {
+                  id,
+                  playing,
+                };
+              }}
+              // The function is call when the video finish
+              onEnded={() => {}}
+              // The function is call when the video is playing (One time for frame)
+              onTimeUpdate={() => {}}
+              // Enable the orverlay when player is paused
+              overlayEnabled
+              // Enabled the auto clode controlls of player
+              autoControllCloseEnabled
+              // Style
+              primaryColor="#673ab7"
+              secundaryColor="#ffffff"
+              fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif"
 
-            </video>
+            // subtitleMedia="/teste.vtt"
+          />
           </div>
           }
         </div>
@@ -70,42 +104,6 @@ class Video extends React.Component {
 
       * {
         box-sizing: border-box;
-      }
-
-      .preview{
-        width: 100%;
-        height: 100%;
-        position: fixed;
-        left: 0px;
-        top: 0px;
-        background: #000;
-        z-index: 100;
-      }
-
-      .preview i{
-        color: #fff;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        position: fixed;
-        font-size: 300%;
-        animation: 1s spinner infinite;
-      }
-
-      @keyframes spinner{
-        0%{
-          transform: translate(-50%, -50%) rotate(0deg);
-        }
-        100%{
-          transform: translate(-50%, -50%) rotate(360deg);
-        }
-      }
-
-      .player video{
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        z-index: 1000;
       }
     `}</style>
     </div>
