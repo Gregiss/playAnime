@@ -95,6 +95,10 @@ class Home extends React.Component {
       const res = await axios.get(`http://localhost:3333/anime/${animeID}`);
       const json = res.data
       react.setState({vendoAnime: json})
+      const state = {}
+      const url = `/anime/${animeID}`
+      window.history.pushState('', `NekoWatch - ${json.animeNome}`,  url);
+      
     } catch (error) {
       console.log(`error`)
       return { error };

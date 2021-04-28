@@ -10,6 +10,14 @@ class Modal extends React.Component {
         super(props);
         this.state = {
         };
+        this.voltar= this.voltar.bind(this);
+    }
+    voltar(){
+      const state = {}
+      const title = `NekoWatch`
+      const url = `/`
+      history.pushState(state, title, url)
+      this.props.home.setState({vendoModal: false})
     }
     render() {
         return <div className="Modal">
@@ -18,7 +26,7 @@ class Modal extends React.Component {
             { this.props.anime != undefined &&
             <div className="load">
                 <div className="imgCover">
-                <a onClick={() => this.props.home.setState({vendoModal: false})} className="voltar">
+                <a onClick={() => this.voltar()} className="voltar">
                     <i className="fas fa-arrow-left"></i>
                 </a>
                 <img src={this.props.anime.imageCover}></img>
