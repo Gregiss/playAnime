@@ -100,7 +100,7 @@ class Home extends React.Component {
       </form>
     </div>
     <div className="scrollAnime">
-    { this.state.searchResult != null &&
+    { this.state.searchResult != null && this.state.searchParam.trim().length > 0 &&
       <div>
         <h1 className="title">Resultados para { this.state.searchParam }</h1>
         <div>
