@@ -247,6 +247,7 @@ class Modal extends React.Component {
         margin-top: 25px;
         margin-left: 10px;
         font-weight: normal;
+        font-size: 16px;
       }
 
       .epe .left .photo{
