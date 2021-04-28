@@ -6,6 +6,10 @@ export const animesRequest = axios.create({
   baseURL: 'https://www.branitube.net/'
 }); 
 
+export const animesRequestSearch = (search: any) => {
+  return axios.get(`https://www.branitube.net${search}`)
+}
+
 export const getAnimeVideo = (idEp: any) => {
   var querystring = require('querystring');
 

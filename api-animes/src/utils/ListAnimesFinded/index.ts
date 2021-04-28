@@ -1,22 +1,25 @@
-import {animesRequest} from '../../services/animeflvbr';
+import {animesRequestSearch} from '../../services/animeflvbr';
 import cheerio from 'cheerio';
 import animesSection from '../animesSection';
 import paginationAnimes from '../paginationAnimes';
 
 async function listAnimesFinded(search: string, page: number) {
-  const urlParam = page == 1 ? '?s=' : `page/${page}?s=`;
-
-  const animes = await animesSection(`${urlParam}${search.replace(/ /g, '+')}`, 0);
-  
-  const body = await animesRequest.get(`${urlParam}${search}`);
-  const paginationNumbers = await paginationAnimes(body.data, 4);
-
+  const body = await animesRequestSearch(`/buscar/${search}`);
+  const animes = new Array()
+  const $ = cheerio.load(body.data);
+  $('.loadscrollleft').find($('.areaAnsTotal').find('.container-area')).find(".getTotalShowingAn").find(".item-an").each(function(i: number, element) {
+    const idAnime = $(element).find('.post').find('a').attr('href')?.split('/')[2]
+    const photo = `https://www.branitube.net${$(element).find('.post').find('a').find('img').attr('src')}`
+    const name = $(element).find('.namean').find('a').text()
+      animes.push({
+      name: name,
+      idAnime: idAnime,
+      photo: photo.replace('300','1200')
+    })
+  })
+  return animes
   return {
-    info: "ANIMES ENCONTRADOS",
-    idAnimes: animes.idAnimes,
-    imagesAttributes: animes.imagesAttributes,
-    title: animes.title,
-    paginationNumbers
+    info: "ANIMES ENCONTRADOS"
   };
 }
 

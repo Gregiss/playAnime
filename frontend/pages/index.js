@@ -14,7 +14,9 @@ class Home extends React.Component {
     this.state = {
       animes: null,
       atualSlide: 0,
-      animeDestaque: null
+      animeDestaque: null,
+      searchParam: "",
+      searchResult: null
     };
     this.end= this.end.bind(this);
   }
@@ -50,6 +52,37 @@ class Home extends React.Component {
       }
     }
   }
+  async submitForm(e){
+    e.preventDefault()
+    if(this.state.searchParam.trim().length > 0){
+      const react = this
+      try {
+        const res = await axios.get(`http://localhost:3333/search/${react.state.searchParam}`);
+        const json = res.data
+        react.setState({ searchResult: json })
+      } catch (error) {
+        console.log(`error`)
+        return { error };
+      }
+    }
+  }
+  async submitFormDigitar(){
+    if(this.state.searchParam.trim().length > 0){
+      const react = this
+      try {
+        const res = await axios.get(`http://localhost:3333/search/${react.state.searchParam}`);
+        const json = res.data
+        react.setState({ searchResult: json })
+      } catch (error) {
+        console.log(`error`)
+        return { error };
+      }
+    }
+  }
+  searchAnime(){
+    this.setState({searchParam: document.querySelector("#inputAnime").value})
+    this.submitFormDigitar()
+  }
   render() {
     return <div className="container">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
@@ -57,10 +90,45 @@ class Home extends React.Component {
       <title>NekoWatch</title>
       <link rel="icon" href="/favicon.ico" />
     </Head>
-    <div className="animeDestaque">
-
+    <div className="fixedTop">
+      <form onSubmit={(e) => this.submitForm(e)}>
+        <input 
+        id="inputAnime"
+        onKeyUp={() => this.searchAnime()}
+        type="text" placeholder="Buscar animes..."></input>
+        <button></button>
+      </form>
     </div>
     <div className="scrollAnime">
+    { this.state.searchResult != null &&
+      <div>
+        <h1 className="title">Resultados para { this.state.searchParam }</h1>
+        <div>
+          {
+          this.state.searchResult != null &&
+          <Carousel 
+          itemsToShow={8}
+          onNextEnd={this.end}>
+          {this.state.searchResult.map(anime => (
+            <div>
+              <a 
+            href={`/anime/${anime.idAnime}`}>
+              <div 
+              className="anime" key={anime.name}>
+                <div className="photo">
+                  <div className="transparent"></div>
+                  <img src={anime.photo}/>  
+                </div>
+                <h1>{ anime.name }</h1>
+              </div>
+            </a> 
+            </div>
+            ))}
+          </Carousel>
+          }
+        </div>
+      </div>
+      }
       <h1 className="title">Animes</h1>
       <div>
         {
@@ -243,6 +311,31 @@ class Home extends React.Component {
       .rec-arrow-left{
         margin-left: 50px;
       }
+
+      .fixedTop{
+        position: fixed;
+        right: 60px;
+        z-index: 100;
+      }
+
+      .fixedTop button{
+        display: none;
+      }
+
+      .fixedTop input{
+        border: none;
+        color: #fff;
+        padding: 8px;
+        border-radius: 4px;
+        background: #000;
+        font-size: 20px;
+        outline: none;
+      }
+
+      .fixedTop input:focus{
+        border-bottom: 2px solid #673ab7;
+      }
+
     `}</style>
   </div>
   }
