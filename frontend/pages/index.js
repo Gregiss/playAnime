@@ -93,6 +93,7 @@ class Home extends React.Component {
     <div className="fixedTop">
       <form onSubmit={(e) => this.submitForm(e)}>
         <input 
+        autoComplete={"off"}
         id="inputAnime"
         onKeyUp={() => this.setState({searchParam: document.querySelector("#inputAnime").value})}
         onKeyDown={() => this.searchAnime()}
