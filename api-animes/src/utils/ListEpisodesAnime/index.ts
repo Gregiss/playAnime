@@ -1,19 +1,29 @@
 import {animesRequest} from '../../services/animeflvbr';
 import cheerio from 'cheerio';
 
-async function listEpisodeAnime(idAnime: string) {
-  const body = await animesRequest.get(`/lista/${idAnime}`);
+async function listEpisodeAnime(idAnime: string, idPagina: string, Anime: string) {
+  const body = await animesRequest.get(`/lista/${idAnime}/${Anime}/pagina/${idPagina}`);
   const url = "https://www.branitube.net"
   const $ = cheerio.load(body.data);
   const photo = `${url}${$('.imgPoster img').attr('src')}`
   const animeNome = $(".largeSize").text()
   const sinopse = $(".sinopseText").text()
   var imageCover = $('.areaCoverAnime').find('.imgCover').find('img').attr('src')
+  var ultimaPagina
+  var linkPagina
+  $('.paginationContent ul').find('li').each(function(i: number, element) {
+    if($(element).find("a").text() == 'Última Página'){
+      linkPagina = $(element).find("a").attr('href')?.split('/')
+    }
+  });
+  
   var dados = {
     photo: photo,
     animeNome: animeNome,
     sinopse: sinopse,
     imageCover: imageCover,
+    linkPagina: linkPagina,
+    generos: new Array(),
     idEpisode: new Array()
   }
 

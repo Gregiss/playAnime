@@ -93,17 +93,20 @@ class Home extends React.Component {
     this.setState({searchParam: document.querySelector("#inputAnime").value})
     this.submitFormDigitar()
   }
-  async getAnime(animeID) {
+  async getAnime(animeID, link) {
     this.setState({vendoAnime: null})
     this.setState({vendoModal: true})
     const react = this
+    const response = await axios.get(`http://localhost:3333/animePage/${animeID}/${link}`);
+    const jsonTwo = response.data
+    var ultimaPagina = jsonTwo.ultimaPagina
     try {
-      const res = await axios.get(`http://localhost:3333/anime/${animeID}`);
+      const res = await axios.get(`http://localhost:3333/anime/${animeID}/${link}/${ultimaPagina}`);
       const json = res.data
+      json.ultimaPagina = ultimaPagina
+      json.link = link
+      json.idAnime = animeID
       react.setState({vendoAnime: json})
-      const state = {}
-      const url = `/anime/${animeID}`
-      window.history.pushState('', `NekoWatch - ${json.animeNome}`,  url);
       
     } catch (error) {
       console.log(`error`)
@@ -120,10 +123,13 @@ class Home extends React.Component {
       <link rel="icon" href="/favicon.ico" />
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
     </Head>
-    { this.state.vendoModal &&
+    { this.state.vendoModal && this.state.vendoAnime != null &&
+    <div>
+    <div className="openAnimeBa"></div>
     <Modal 
-    home={this}
-    anime={this.state.vendoAnime}></Modal>
+      home={this}
+      anime={this.state.vendoAnime}></Modal>
+    </div>
     }
     <div className="fixedTop">
       <form onSubmit={(e) => this.submitForm(e)}>
@@ -149,7 +155,7 @@ class Home extends React.Component {
           {this.state.searchResult.map(anime => (
             <div>
               <a
-              onClick={() => this.getAnime(anime.idAnime)}>
+              onClick={() => this.getAnime(anime.idAnime, anime.animeLink)}>
               <div 
               className="anime" key={anime.name}>
                 <div className="photo">
@@ -176,7 +182,7 @@ class Home extends React.Component {
         {this.state.animes.map(anime => (
           <div>
             <a
-            onClick={() => this.getAnime(anime.idAnime)}>
+            onClick={() => this.getAnime(anime.idAnime, anime.animeLink)}>
             <div 
             className="anime" key={anime.name}>
               <div className="photo">
@@ -417,6 +423,7 @@ class Home extends React.Component {
       .rec-dot_active{
         box-shadow: 0 0 1px 3px rgb(103 58 183) !important;
       }
+
 
     `}</style>
   </div>

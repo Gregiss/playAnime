@@ -7,9 +7,8 @@ import * as http from 'http';
 
 class EpisodesController {
   async index(request: Request, response: Response) {
-    const { idAnime } = request.params;
-    const episodes = await listEpisodes(idAnime);
-
+    const { idAnime, idPagina, Anime } = request.params;
+    const episodes = await listEpisodes(idAnime, idPagina, Anime);
     return response.json(episodes);
   }
 

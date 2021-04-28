@@ -11,9 +11,11 @@ async function listAnimesFinded(search: string, page: number) {
     const idAnime = $(element).find('.post').find('a').attr('href')?.split('/')[2]
     const photo = `https://www.branitube.net${$(element).find('.post').find('a').find('img').attr('src')}`
     const name = $(element).find('.namean').find('a').text()
+    const animeLink = $(element).find('.post').find('a').attr('href')?.split('/')[3] 
       animes.push({
       name: name,
       idAnime: idAnime,
+      animeLink: animeLink,
       photo: photo.replace('300','1200')
     })
   })

@@ -4,14 +4,18 @@ import { createStore } from 'redux'
 import { useState } from 'react';
 import { useRouter } from 'next/router'
 import Carousel from 'react-elastic-carousel';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 class Modal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fakeLoading: [0,0,0,0,0,0,0,0,0,0]
+            fakeLoading: [0,0,0,0,0,0,0,0,0,0],
+            paginaAtual: this.props.anime.ultimaPagina,
+            eps: this.props.anime.idEpisode
         };
         this.voltar= this.voltar.bind(this);
+        this.fetchMoreData= this.fetchMoreData.bind(this);
     }
     voltar(){
       const state = {}
@@ -20,10 +24,23 @@ class Modal extends React.Component {
       history.pushState(state, title, url)
       this.props.home.setState({vendoModal: false})
     }
+    async fetchMoreData(){
+      if(this.state.paginaAtual > 0){
+          const react = this
+          react.setState({paginaAtual: react.state.paginaAtual -= 1})
+        
+          const res = await axios.get(`http://localhost:3333/anime/${react.props.anime.idAnime}/${react.props.anime.link}/${react.state.paginaAtual}`);
+          const json = res.data.idEpisode
+          var joined = react.state.eps.concat(json);
+          react.setState({ eps: joined })
+      }
+
+    };
     render() {
         return <div className="Modal">
-        
-        <div className="openAnime">
+        <div 
+        onScroll={(e) => console.log(e)}
+        className="openAnime">
         { this.props.anime == undefined &&
             <div className="load">
                 <div className="imgCover fakeLoading">
@@ -61,7 +78,13 @@ class Modal extends React.Component {
                 </div>
                 <div className="ep">
                 <h1>Episódios</h1>
-                {this.props.anime.idEpisode.map((ep, index) => (
+                <InfiniteScroll
+                dataLength={this.state.eps.length}
+                next={this.fetchMoreData}
+                hasMore={true}
+                loader={<h4>Carregando novos Episódios...</h4>}
+              >
+                {this.state.eps.map((ep, index) => (
                 <a href={`/assistir/${ep.episodeId}`}>
                     <div
                     className="epe">
@@ -77,6 +100,12 @@ class Modal extends React.Component {
                     </div>
                 </a>
                 ))}
+                </InfiniteScroll>
+                { this.state.paginaAtual > 0 &&
+                <a 
+                onClick={() => this.fetchMoreData()}
+                className="maisEpisodios">Clique aqui para mais episódios.</a>
+                }
                 </div>
             </div> 
             }
@@ -100,6 +129,12 @@ class Modal extends React.Component {
         box-sizing: border-box;
       }
 
+      .maisEpisodios{
+        font-size: 22px;
+        cursor: pointer;
+        text-align: center;
+      }
+      
       .fakeLoading{
         animation: 1.4s loadindFake infinite;
       }

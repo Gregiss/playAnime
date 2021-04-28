@@ -77,7 +77,7 @@ class Video extends React.Component {
               // Enabled the auto clode controlls of player
               autoControllCloseEnabled
               // Style
-              primaryColor="#673ab7"
+              primaryColor="#ffffff"
               secundaryColor="#ffffff"
               fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif"
 

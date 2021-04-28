@@ -20,9 +20,11 @@ routes.get('/lista/page/:page', animesListController.index);
 routes.get('/search/:search', animesFindedController.index);
 routes.get('/search/:search/page/:page', animesFindedController.index);
 
-routes.get('/anime/:idAnime', episodesController.index);
+routes.get('/anime/:idAnime/:Anime/:idPagina', episodesController.index);
 routes.get('/video/:idEpisode', episodesController.show);
 
-routes.get('/loadVideo/:url', episodesController.player);
+routes.get('/animePage/:idAnime/:animeLink', homeController.getPaginasMax);
+
+routes.get('')
 
 export default routes;
