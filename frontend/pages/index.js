@@ -94,7 +94,8 @@ class Home extends React.Component {
       <form onSubmit={(e) => this.submitForm(e)}>
         <input 
         id="inputAnime"
-        onKeyUp={() => this.searchAnime()}
+        onKeyUp={() => this.setState({searchParam: document.querySelector("#inputAnime").value})}
+        onKeyDown={() => this.searchAnime()}
         type="text" placeholder="Buscar animes..."></input>
         <button></button>
       </form>
