@@ -229,8 +229,9 @@ function Anime({anime, error}) {
            position: absolute;
            margin-top: 4.4em;
            color: #fff;
-           left: 0px;
+           left: -1em;
            font-size: 2vw;
+           transform: scale(0.8);
            text-shadow: 1px 2px 1px rgba(0,0,0,.40);
          }
 

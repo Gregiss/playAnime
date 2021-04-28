@@ -45,7 +45,7 @@ async function listEpisodeAnime(idAnime: string) {
   // };
   $('.item-ep').find('.area-ep').each(function(i: number, element) {
     var idEpisode = $(element).find('a').attr('href')
-    var ep = $(element).find('.infos-bottom').find('.ep-info').find('.anime-content').text().split('EP.')[1].split(' ')[1]
+    var ep = $(element).find('.infos-bottom').find('.ep-info').find('.anime-content').text()
     var title = $(element).find('a').attr('title')
     var imageCover
     var image = ""
