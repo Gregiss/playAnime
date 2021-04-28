@@ -26,7 +26,7 @@ class Modal extends React.Component {
                 <div className="ep">
                 <h1>Episódios</h1>
                 {this.props.anime.idEpisode.map((ep, index) => (
-                <a href={`/assistor/${ep.episodeId}`}>
+                <a href={`/assistir/${ep.episodeId}`}>
                     <div
                     className="epe">
                         <div className="left">
