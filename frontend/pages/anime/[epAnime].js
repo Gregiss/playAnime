@@ -271,6 +271,8 @@ function Anime({anime, error}) {
            top: 70px;
            left: 200px;
            color: rgba(255,255,255,.80);
+           height: 141px;
+           overflow: auto;
          }
       `}</style>
     </div>
