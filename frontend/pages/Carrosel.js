@@ -22,8 +22,8 @@ class Carrousel extends React.Component {
   componentDidMount(){
     this.setState({animes: []})
     this.getAnimes()
-    this.changeView()
     this.setState({width: window.innerWidth})
+    this.changeView()
     window.addEventListener('resize', () => {
       this.setState({width: window.innerWidth})
       this.changeView()
