@@ -30,21 +30,6 @@ class Home extends React.Component {
     };
   }
   componentDidMount(){
-    this.setState({animes: []})
-    this.getAnimes()
-  }
-  async getAnimes() {
-    const react = this
-    try {
-      const res = await axios.get(`http://localhost:3333/page/${randomPage}`);
-      const json = res.data
-      react.setState({animeDestaque: json.animes[Math.floor(Math.random() * json.animes.length)]})
-      react.setState({animes: json.animes})
-      react.setState({loadingAnimes: false})
-    } catch (error) {
-      console.log(`error`)
-      return { error };
-    }
   }
   async submitForm(e){
     e.preventDefault()
@@ -83,6 +68,7 @@ class Home extends React.Component {
   }
   sairModal(){
     this.setState({vendoModal: false})
+    document.querySelector('html').style.overflowY = "auto"
   }
   addFavorite(anime){
     try {

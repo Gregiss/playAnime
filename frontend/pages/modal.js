@@ -19,11 +19,8 @@ class Modal extends React.Component {
         this.fetchMoreData= this.fetchMoreData.bind(this);
     }
     voltar(){
-      const state = {}
-      const title = `NekoWatch`
-      const url = `/`
-      history.pushState(state, title, url)
       this.props.home.setState({vendoModal: false})
+      document.querySelector('html').style.overflowY = "auto"
     }
     async fetchMoreData(){
       if(this.state.paginaAtual > 0){

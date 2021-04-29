@@ -44,6 +44,7 @@ class Carrousel extends React.Component {
     this.props.home.setState({vendoAnime: null})
     this.props.home.setState({vendoModal: true})
     this.props.home.setState({carregandoModal: true})
+    document.querySelector('html').style.overflowY = "hidden"
     const react = this
     const response = await axios.get(`http://localhost:3333/animePage/${animeID}/${link}`);
     const jsonTwo = response.data
@@ -61,9 +62,6 @@ class Carrousel extends React.Component {
       console.log(`error`)
       return { error };
     }
-  }
-  sairModal(){
-    this.setState({vendoModal: false})
   }
   render() {
     return <div className="container">
