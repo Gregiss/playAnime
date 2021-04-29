@@ -207,6 +207,12 @@ class Home extends React.Component {
         <Carrousel
         home={this}
         type={'search'}
+        titulo={`Tudo sobre Dragon Ball`}
+        url={`search/Dragon Ball`}
+        ></Carrousel>
+        <Carrousel
+        home={this}
+        type={'search'}
         titulo={`Animes dublados`}
         url={`search/dublado`}
         >
