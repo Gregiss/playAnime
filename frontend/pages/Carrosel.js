@@ -1,12 +1,8 @@
 import Head from 'next/head'
 import React from 'react'
 import axios from 'axios';
-import { createStore } from 'redux'
-import { useState } from 'react';
-import { useRouter } from 'next/router'
 import Carousel from 'react-elastic-carousel';
 import Modal from './modal';
-import Destaque from './Dashboard'
 
 class Carrousel extends React.Component {
   constructor(props) {
@@ -17,12 +13,40 @@ class Carrousel extends React.Component {
       vendoModal: false,
       loadingAnimes: true,
       fakeLoading: [0,0,0,0,0,0,0,0,0,0],
+      width: 1920,
+      toShow: 8
     };
     this.getAnime= this.getAnime.bind(this);
+    this.changeView= this.changeView.bind(this);
   }
   componentDidMount(){
     this.setState({animes: []})
     this.getAnimes()
+    this.changeView()
+    this.setState({width: window.innerWidth})
+    window.addEventListener('resize', () => {
+      this.setState({width: window.innerWidth})
+      this.changeView()
+    })
+  }
+  changeView(){
+    if(this.state.width > 1920){
+      this.setState({toShow: 8})
+    } else if(this.state.width >= 1720 && this.state.width <= 1920){
+      this.setState({toShow: 8})
+    } else if(this.state.width >= 1496 && this.state.width <= 1720){
+      this.setState({toShow: 7})
+    } else if(this.state.width >= 1496 && this.state.width <= 1720){
+      this.setState({toShow: 6})
+    } else if(this.state.width >= 1362 && this.state.width <= 1496){
+      this.setState({toShow: 6})
+    } else if(this.state.width >= 979 && this.state.width <= 1362){
+      this.setState({toShow: 5})
+    } else if(this.state.width >= 803 && this.state.width <= 979){
+      this.setState({toShow: 4})
+    } else if(this.state.width >= 803 && this.state.width <= 803){
+      this.setState({toShow: 2})
+    }
   }
   async getAnimes() {
     const react = this
@@ -78,8 +102,8 @@ class Carrousel extends React.Component {
       <div>
         {
         this.state.animes != null &&
-        <Carousel 
-        itemsToShow={8}>
+        <Carousel
+        itemsToShow={this.state.toShow}>
         { this.state.animes.map(anime => (
           <div>
             <a
