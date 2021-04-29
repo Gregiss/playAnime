@@ -36,8 +36,23 @@ class Modal extends React.Component {
           react.setState({ eps: joined })
           react.setState({loading: false})
       }
-
-    };
+    }
+    addFavorite(anime){
+      try {
+        var atual = window.localStorage.getItem('favorite') != null ? JSON.parse(window.localStorage.getItem('favorite')) : []
+        if(window.localStorage.getItem('favorite') == null || !JSON.parse(window.localStorage.getItem('favorite')).find(e => e.idAnime == this.props.anime.idAnime)){
+          atual.push(anime)
+          window.localStorage.setItem('favorite', JSON.stringify(atual))
+        } else{
+          const id = atual.indexOf(JSON.parse(window.localStorage.getItem('favorite')).find(e => e.idAnime == this.props.anime.idAnime))
+          atual.splice(id, 1)
+          window.localStorage.setItem('favorite', JSON.stringify(atual))
+        }
+        
+      } catch (error) {
+        
+      }
+    }
     render() {
         return <div className="Modal">
           { this.state.loading && <div className="openAnimeBa">
@@ -79,6 +94,10 @@ class Modal extends React.Component {
                 <a onClick={() => this.voltar()} className="voltar">
                     <i className="fas fa-arrow-left"></i>
                 </a>
+                <i 
+                onClick={() => this.addFavorite(this.props.anime)}
+                className={`fas fa-heart love
+                ${(window.localStorage.getItem('favorite') != null && JSON.parse(window.localStorage.getItem('favorite')).find(e => e.idAnime == this.props.anime.idAnime)) ? 'loved' : ''}`}></i>
                 <img src={this.props.anime.imageCover}></img>
                 </div>
                 <div className="ep">
@@ -288,6 +307,23 @@ class Modal extends React.Component {
         font-size: 500%;
         animation: 1s loding infinite;
         color: white;
+      }
+
+      .love:hover{
+        transform: scale(1.1);
+      }
+
+      .love{
+        position: absolute;
+        font-size: 200%;
+        color: #fff;
+        right: 20px;
+        top: 280px;
+        cursor: pointer;
+      }
+
+      .loved{
+        color: #cc1e1e;
       }
 
       @keyframes loding{

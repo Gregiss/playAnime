@@ -7,27 +7,17 @@ import { useRouter } from 'next/router'
 import Carousel from 'react-elastic-carousel';
 import Modal from './modal';
 import Destaque from './Dashboard'
-import Carrousel from './Carrosel'
 
-var randomPage = Math.floor(Math.random() * 20) + 1
-
-
-class Home extends React.Component {
+class Carrousel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       animes: null,
-      atualSlide: 0,
-      animeDestaque: null,
-      searchParam: "",
-      searchResult: null,
       vendoAnime: null,
       vendoModal: false,
       loadingAnimes: true,
       fakeLoading: [0,0,0,0,0,0,0,0,0,0],
-      animesFavoritos: []
     };
-    this.end= this.end.bind(this);
     this.getAnime= this.getAnime.bind(this);
   }
   componentDidMount(){
@@ -37,68 +27,18 @@ class Home extends React.Component {
   async getAnimes() {
     const react = this
     try {
-      const res = await axios.get(`http://localhost:3333/page/${randomPage}`);
+      const res = await axios.get(`http://localhost:3333/${react.props.url}`);
       const json = res.data
-      react.setState({animeDestaque: json.animes[Math.floor(Math.random() * json.animes.length)]})
-      react.setState({animes: json.animes})
+      if(react.props.type != undefined && react.props.type == 'search'){
+        react.setState({animes: json})
+      }else{
+        react.setState({animes: json.animes})
+      }
       react.setState({loadingAnimes: false})
     } catch (error) {
-      console.log(`error`)
+      console.error(`Erro fetchin url [ ${react.props.url} ]`)
       return { error };
     }
-  }
-  async end(e){
-    if((e.index / 8).toString().includes('.')){
-      const react = this
-      this.setState({loadingAnimes: true})
-      randomPage++
-      try {
-        const res = await axios.get(`http://localhost:3333/page/${randomPage}`);
-        const json = res.data
-        var joined = react.state.animes.concat(json.animes);
-        react.setState({ animes: joined })
-        this.setState({atualSlide: 0})
-        react.setState({loadingAnimes: false})
-      } catch (error) {
-        console.log(`error`)
-        return { error };
-      }
-    }
-  }
-  async submitForm(e){
-    e.preventDefault()
-    window.scroll({top: 300, left: 0, behavior: 'smooth'});
-    if(this.state.searchParam.trim().length > 0){
-      const react = this
-      try {
-        const res = await axios.get(`http://localhost:3333/search/${react.state.searchParam}`);
-        const json = res.data
-        setTimeout(() => {
-          react.setState({ searchResult: json })
-        }, 500);
-      } catch (error) {
-        console.log(`error`)
-        return { error };
-      }
-    }
-  }
-  async submitFormDigitar(){
-    if(this.state.searchParam.trim().length > 0){
-      const react = this
-      try {
-        const res = await axios.get(`http://localhost:3333/search/${react.state.searchParam}`);
-        const json = res.data
-        react.setState({ searchResult: json })
-      } catch (error) {
-        console.log(`error`)
-        return { error };
-      }
-    }
-  }
-  searchAnime(){
-    window.scroll({top: 300, left: 0, behavior: 'smooth'});
-    this.setState({searchParam: document.querySelector("#inputAnime").value})
-    this.submitFormDigitar()
   }
   async getAnime(animeID, link) {
     this.setState({vendoAnime: null})
@@ -123,29 +63,8 @@ class Home extends React.Component {
   sairModal(){
     this.setState({vendoModal: false})
   }
-  addFavorite(anime){
-    try {
-      var atual = window.localStorage.getItem('favorite') != null ? JSON.parse(window.localStorage.getItem('favorite')) : []
-      if(!JSON.parse(window.localStorage.getItem('favorite')).find(e => e.idAnime == anime.idAnime) || window.localStorage.getItem('favorite') == null){
-        atual.push(anime)
-        window.localStorage.setItem('favorite', JSON.stringify(atual))
-      } else{
-        const id = atual.indexOf(JSON.parse(window.localStorage.getItem('favorite')).find(e => e.idAnime == anime.idAnime))
-        atual.splice(id, 1)
-        window.localStorage.setItem('favorite', JSON.stringify(atual))
-      }
-      
-    } catch (error) {
-      
-    }
-  }
   render() {
     return <div className="container">
-    <Head>
-      <title>NekoWatch</title>
-      <link rel="icon" href="/favicon.ico" />
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
-    </Head>
     { this.state.vendoModal && this.state.vendoAnime == null &&<div className="openAnimeBa">
     <i className="fas fa-spinner"></i>
     </div> }
@@ -157,115 +76,43 @@ class Home extends React.Component {
       anime={this.state.vendoAnime}></Modal>
     </div>
     }
-    <div className="fixedTop">
-      <form onSubmit={(e) => this.submitForm(e)}>
-        <input 
-        autoComplete={"off"}
-        id="inputAnime"
-        onKeyUp={() => this.setState({searchParam: document.querySelector("#inputAnime").value})}
-        onKeyDown={() => this.searchAnime()}
-        type="text" placeholder="Buscar animes..."></input>
-        <button></button>
-      </form>
-    </div>
-    <Destaque></Destaque>
-    <div>
-    { this.state.searchResult != null && this.state.searchParam.trim().length > 0 &&
-      <div className='searchResult'>
-        <h1 className="title">Resultados para { this.state.searchParam }</h1>
-        <div>
-          {
-          this.state.searchResult != null &&
-          <Carousel 
-          itemsToShow={8}>
-          {this.state.searchResult.map(anime => (
-            <div>
-              <a
-              onClick={() => this.getAnime(anime.idAnime, anime.animeLink)}>
-              <div 
-              className="anime" key={anime.name}>
-                <div className="photo">
-                  <div className="transparent"></div>
-                  <img src={anime.photo}/>  
-                </div>
-                <h1>{ anime.name }</h1>
+    <div className="scrollAnime">
+      <h1 className="title">{ this.props.titulo }</h1>
+      <div>
+        {
+        this.state.animes != null &&
+        <Carousel 
+        itemsToShow={8}>
+        { this.state.animes.map(anime => (
+          <div>
+            <a
+            onClick={() => this.getAnime(anime.idAnime, anime.animeLink)}>
+            <div 
+            className="anime" key={anime.name}>
+              <div className="photo">
+                <div className="transparent"></div>
+                <img src={anime.photo}/>  
               </div>
-            </a> 
+              <h1>{ anime.name }</h1>
             </div>
-            ))}
-          </Carousel>
-          }
-        </div>
-      </div>
-      }
-      <div className="scrollAnime">
-        <Carrousel
-        titulo={`Animes aleatórios`}
-        url={`page/${randomPage}`}
-        >
-        </Carrousel>
-        <Carrousel
-        titulo={`Animes de terror`}
-        url={`genre/40`}
-        >
-        </Carrousel>
-        <Carrousel
-        titulo={`Animes de ação`}
-        url={`genre/1`}
-        >
-        </Carrousel>
-        <Carrousel
-        titulo={`Animes de artes Marciais`}
-        url={`genre/3`}
-        >
-        </Carrousel>
-        <Carrousel
-        titulo={`Animes de bishounen`}
-        url={`genre/4 `}
-        >
-        </Carrousel>
-        <Carrousel
-        titulo={`Animes de demônios`}
-        url={`genre/8`}
-        >
-        </Carrousel>
-        <Carrousel
-        titulo={`Animes de comédia`}
-        url={`genre/5`}
-        >
-        </Carrousel>
-        <Carrousel
-        titulo={`Animes de suspense`}
-        url={`genre/39`}
-        >
-        </Carrousel>
-        <Carrousel
-        titulo={`Animes de drama`}
-        url={`genre/7`}
-        >
-        </Carrousel>
-        <Carrousel
-        type={'search'}
-        titulo={`Tudo sobre Naruto`}
-        url={`search/Naruto`}
-        >
-        </Carrousel>
-        <Carrousel
-        type={'search'}
-        titulo={`Animes dublados`}
-        url={`search/dublado`}
-        >
-        </Carrousel>
-        <Carrousel
-        titulo={`Animes de magia`}
-        url={`genre/24`}
-        >
-        </Carrousel>
-        <Carrousel
-        titulo={`Animes de isekai`}
-        url={`genre/48`}
-        >
-        </Carrousel>
+          </a> 
+          </div>
+          ))}
+          { this.state.loadingAnimes && this.state.fakeLoading .map(anime => (
+          <div>
+            <a>
+            <div 
+            className="anime" key={anime}>
+              <div className="photo fakeLoading">
+                <div className="transparent"></div> 
+              </div>
+              <h1></h1>
+            </div>
+          </a> 
+          </div>
+          ))}
+        </Carousel>
+        }
       </div>
     </div>
     
@@ -283,13 +130,6 @@ class Home extends React.Component {
         overflow-y: auto;
         overflow-x: hidden;
         padding-bottom: 5vh;
-      }
-
-      .searchResult{
-        top: -6vh;
-        position: relative;
-        left: -55px;
-        transform: scale(0.98);
       }
 
       .fakeLoading{
@@ -393,15 +233,13 @@ class Home extends React.Component {
       .title{
         color: #fff;
         position: relative;
-        left: 157px;
+        left: 64px;
       }
 
       .scrollAnime{
         margin-left: -40px;
-        top: -5vh;
-        left: 10px;
+        top: -12vh;
         position: relative;
-        transform: scale(0.98);
       }
       
       .anime{
@@ -521,4 +359,4 @@ class Home extends React.Component {
   }
 }
 
-export default Home
+export default Carrousel

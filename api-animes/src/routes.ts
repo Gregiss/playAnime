@@ -16,6 +16,7 @@ routes.get('/page/:page', homeController.index);
 
 routes.get('/lista', animesListController.index);
 routes.get('/lista/page/:page', animesListController.index);
+routes.get('/genre/:idGenero', homeController.filter);
 
 routes.get('/search/:search', animesFindedController.index);
 routes.get('/search/:search/page/:page', animesFindedController.index);
