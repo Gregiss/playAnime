@@ -41,8 +41,9 @@ class Carrousel extends React.Component {
     }
   }
   async getAnime(animeID, link) {
-    this.setState({vendoAnime: null})
-    this.setState({vendoModal: true})
+    this.props.home.setState({vendoAnime: null})
+    this.props.home.setState({vendoModal: true})
+    this.props.home.setState({carregandoModal: true})
     const react = this
     const response = await axios.get(`http://localhost:3333/animePage/${animeID}/${link}`);
     const jsonTwo = response.data
@@ -53,7 +54,8 @@ class Carrousel extends React.Component {
       json.ultimaPagina = ultimaPagina
       json.link = link
       json.idAnime = animeID
-      react.setState({vendoAnime: json})
+      react.props.home.setState({vendoAnime: json})
+      react.props.home.setState({carregandoModal: false})
       
     } catch (error) {
       console.log(`error`)
@@ -65,9 +67,6 @@ class Carrousel extends React.Component {
   }
   render() {
     return <div className="container">
-    { this.state.vendoModal && this.state.vendoAnime == null &&<div className="openAnimeBa">
-    <i className="fas fa-spinner"></i>
-    </div> }
     { this.state.vendoModal && this.state.vendoAnime != null &&
     <div>
     

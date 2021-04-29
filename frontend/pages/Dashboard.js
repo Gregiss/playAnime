@@ -8,20 +8,7 @@ export default class Home extends React.Component {
         };
       }
       componentDidMount(){
-          this.getAnime(195)
-      }
-      async getAnime(animeID) {
-        this.setState({vendoModal: true})
-        this.setState({vendoAnime: null})
-        const react = this
-        try {
-          const res = await axios.get(`http://localhost:3333/anime/${animeID}`);
-          const json = res.data
-          react.setState({animeDestaque: json})
-        } catch (error) {
-          console.log(`error`)
-          return { error };
-        }
+        
       }
       render() {
         return <div className="destaqueBoo">

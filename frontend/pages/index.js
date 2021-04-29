@@ -25,10 +25,9 @@ class Home extends React.Component {
       vendoModal: false,
       loadingAnimes: true,
       fakeLoading: [0,0,0,0,0,0,0,0,0,0],
-      animesFavoritos: []
+      animesFavoritos: [],
+      carregandoModal: false
     };
-    this.end= this.end.bind(this);
-    this.getAnime= this.getAnime.bind(this);
   }
   componentDidMount(){
     this.setState({animes: []})
@@ -45,24 +44,6 @@ class Home extends React.Component {
     } catch (error) {
       console.log(`error`)
       return { error };
-    }
-  }
-  async end(e){
-    if((e.index / 8).toString().includes('.')){
-      const react = this
-      this.setState({loadingAnimes: true})
-      randomPage++
-      try {
-        const res = await axios.get(`http://localhost:3333/page/${randomPage}`);
-        const json = res.data
-        var joined = react.state.animes.concat(json.animes);
-        react.setState({ animes: joined })
-        this.setState({atualSlide: 0})
-        react.setState({loadingAnimes: false})
-      } catch (error) {
-        console.log(`error`)
-        return { error };
-      }
     }
   }
   async submitForm(e){
@@ -100,26 +81,6 @@ class Home extends React.Component {
     this.setState({searchParam: document.querySelector("#inputAnime").value})
     this.submitFormDigitar()
   }
-  async getAnime(animeID, link) {
-    this.setState({vendoAnime: null})
-    this.setState({vendoModal: true})
-    const react = this
-    const response = await axios.get(`http://localhost:3333/animePage/${animeID}/${link}`);
-    const jsonTwo = response.data
-    var ultimaPagina = jsonTwo.ultimaPagina
-    try {
-      const res = await axios.get(`http://localhost:3333/anime/${animeID}/${link}/${ultimaPagina}`);
-      const json = res.data
-      json.ultimaPagina = ultimaPagina
-      json.link = link
-      json.idAnime = animeID
-      react.setState({vendoAnime: json})
-      
-    } catch (error) {
-      console.log(`error`)
-      return { error };
-    }
-  }
   sairModal(){
     this.setState({vendoModal: false})
   }
@@ -146,17 +107,14 @@ class Home extends React.Component {
       <link rel="icon" href="/favicon.ico" />
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
     </Head>
-    { this.state.vendoModal && this.state.vendoAnime == null &&<div className="openAnimeBa">
-    <i className="fas fa-spinner"></i>
-    </div> }
-    { this.state.vendoModal && this.state.vendoAnime != null &&
     <div>
-    
-    <Modal 
+      { this.state.carregandoModal && <div className="openAnimeBa">
+      <i className="fas fa-spinner"></i>
+      </div> }
+      { this.state.vendoAnime != null && this.state.vendoModal && <Modal 
       home={this}
-      anime={this.state.vendoAnime}></Modal>
+      anime={this.state.vendoAnime}></Modal> }
     </div>
-    }
     <div className="fixedTop">
       <form onSubmit={(e) => this.submitForm(e)}>
         <input 
@@ -200,68 +158,81 @@ class Home extends React.Component {
       }
       <div className="scrollAnime">
         <Carrousel
+        home={this}
         titulo={`Animes aleatórios`}
         url={`page/${randomPage}`}
         >
         </Carrousel>
         <Carrousel
+        home={this}
         titulo={`Animes de terror`}
         url={`genre/40`}
         >
         </Carrousel>
         <Carrousel
+        home={this}
         titulo={`Animes de ação`}
         url={`genre/1`}
         >
         </Carrousel>
         <Carrousel
+        home={this}
         titulo={`Animes de artes Marciais`}
         url={`genre/3`}
         >
         </Carrousel>
         <Carrousel
+        home={this}
         titulo={`Animes de bishounen`}
         url={`genre/4 `}
         >
         </Carrousel>
         <Carrousel
+        home={this}
         titulo={`Animes de demônios`}
         url={`genre/8`}
         >
         </Carrousel>
         <Carrousel
+        home={this}
         titulo={`Animes de comédia`}
         url={`genre/5`}
         >
         </Carrousel>
         <Carrousel
+        home={this}
         titulo={`Animes de suspense`}
         url={`genre/39`}
         >
         </Carrousel>
         <Carrousel
+        home={this}
         titulo={`Animes de drama`}
         url={`genre/7`}
         >
         </Carrousel>
         <Carrousel
+        home={this}
         type={'search'}
         titulo={`Tudo sobre Naruto`}
         url={`search/Naruto`}
         >
         </Carrousel>
         <Carrousel
+        home={this}
         type={'search'}
         titulo={`Animes dublados`}
         url={`search/dublado`}
         >
         </Carrousel>
         <Carrousel
+        home={this}
         titulo={`Animes de magia`}
         url={`genre/24`}
         >
         </Carrousel>
         <Carrousel
+        home={this}
         titulo={`Animes de isekai`}
         url={`genre/48`}
         >
