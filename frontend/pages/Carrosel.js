@@ -45,6 +45,8 @@ class Carrousel extends React.Component {
     } else if(this.state.width >= 803 && this.state.width <= 979){
       this.setState({toShow: 4})
     } else if(this.state.width >= 803 && this.state.width <= 803){
+      this.setState({toShow: 3})
+    } else{
       this.setState({toShow: 2})
     }
   }
