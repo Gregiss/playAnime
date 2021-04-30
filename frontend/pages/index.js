@@ -61,6 +61,29 @@ class Home extends React.Component {
       }
     }
   }
+  async getAnime(animeID, link) {
+    this.setState({vendoAnime: null})
+    this.setState({vendoModal: true})
+    this.setState({carregandoModal: true})
+    document.querySelector('html').style.overflowY = "hidden"
+    const react = this
+    const response = await axios.get(`http://localhost:3333/animePage/${animeID}/${link}`);
+    const jsonTwo = response.data
+    var ultimaPagina = jsonTwo.ultimaPagina
+    try {
+      const res = await axios.get(`http://localhost:3333/anime/${animeID}/${link}/${ultimaPagina}`);
+      const json = res.data
+      json.ultimaPagina = ultimaPagina
+      json.link = link
+      json.idAnime = animeID
+      this.setState({vendoAnime: json})
+      this.setState({carregandoModal: false})
+      
+    } catch (error) {
+      console.log(`error`)
+      return { error };
+    }
+  }
   searchAnime(){
     window.scroll({top: 300, left: 0, behavior: 'smooth'});
     this.setState({searchParam: document.querySelector("#inputAnime").value})
